@@ -13,27 +13,25 @@ int main()
   // variables
   float a, b, num;
   string cmd, junk, var;
-  bool useA;
 
   // get input
   cout << "Values for a and b? ";
   cin >> a >> junk >> b;
   
   cout << "What do you want? ";
-  cin >> cmd >> num >> junk >> var;
+  cin >> cmd; 
   
-  // determine which variable is being used
-  useA = var == "a"; // last index is going to be the variable
-
   // process the command and execute
   if (cmd == "add")
   {
-    if (useA) a += num;
+    cin >> num >> junk >> var;
+    if (var == "a") a += num;
     else b += num;
   } 
   else if (cmd == "square")
   {
-    if (useA) a *= a;
+    cin >> var;
+    if (var == "a") a *= a;
     else b *= b;
   }
 
