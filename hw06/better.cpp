@@ -13,28 +13,26 @@ int main()
   // variables
   float a, b, num;
   string cmd, junk, var;
-  bool useA;
 
   // get input
   cout << "Values for a and b? ";
   cin >> a >> junk >> b;
   
   cout << "What do you want? ";
-  cin >> cmd >> num >> junk >> var;
-  
-  // determine which variable is being used
-  useA = var == "a"; // last index is going to be the variable
+  cin >> cmd;  
 
   // process the command and execute
   if (cmd == "add")
   {
+    cin >> num >> junk >> var;
     // I can use ternary operator instead of if/else to get the correct variable
-    (useA ? a:b) += num;// I came up with this :)
+    (var == "a" ? a:b) += num;// I came up with this :)
   } 
   else if (cmd == "square")
   {
+    cin >> var;
     // same thing as above
-    (useA ? a:b) *= (useA ? a:b);
+    (var == "a" ? a:b) *= (useA ? a:b);
   }
 
   // report a and b
