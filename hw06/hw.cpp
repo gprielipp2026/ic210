@@ -28,13 +28,13 @@ int main()
   // process the command and execute
   if (cmd == "add")
   {
-    // I can use ternary operator instead of if/else to get the correct variable
-    (useA ? a:b) += num;// I came up with this :)
+    if (useA) a += num;
+    else b += num;
   } 
   else if (cmd == "square")
   {
-    // same thing as above
-    (useA ? a:b) *= (useA ? a:b);
+    if (useA) a *= a;
+    else b *= b;
   }
 
   // report a and b
