@@ -7,7 +7,7 @@ int main()
   int sum = 0, input;
   char op = 'a', space;
 
-  cin >> sum;
+  cin >> sum >> op >> input;
 
   //loop until '='
   while (op != '=')
@@ -17,11 +17,8 @@ int main()
     else if (op == '-') sum -= input;
   
     // get input
-    cin >> op;
-    if (op == '=') break;
-    else cin >> input;
+    cin >> op >> input;
     cout << "sum: " << sum << " " << op << " " << input << endl;
-    
   }
 
   // return sum
