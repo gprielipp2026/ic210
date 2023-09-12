@@ -1,10 +1,13 @@
 CXX=g++
 CXXFLAGS=-Wall
 
-all: readppm gray
+all: readppm gray green
 
 readppm: readppm.cpp
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 gray: gray.cpp
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+green: green.cpp
 	$(CXX) $(CXXFLAGS) $^ -o $@
