@@ -42,8 +42,8 @@ int main()
   cout << "Output file: ";
   cin >> outName;
 
-	// make sure input files opened
-	if(!bgImage || ! fgImage)
+  // make sure input files opened
+  if (!bgImage || !fgImage)
   {
     cout << "Error: Input file not found" << endl;
     return 1;
@@ -74,7 +74,7 @@ int main()
   // read max pixel value
   int maxValue;
   fgImage >> maxValue;
-	bgImage >> maxValue;
+  bgImage >> maxValue;
 
   // Output main data to output file
   outImage << fgHeader << endl;
@@ -82,20 +82,19 @@ int main()
   outImage << maxValue << endl;
 
   // read in per pixel and row/col
-  int row = 0;
   int fred, fgreen, fblue, bred, bgreen, bblue;
 
-  while (row < bgHeight)
+  for (int row = 0; row < bgHeight; row++)
   {
-    int col = 0;
-    while (col < bgWidth)
+    for (int col = 0; col < bgWidth; col++)
     {
       // read the pixel data
       if ((row >= rowShift) && (row < rowShift + fgHeight) &&
           (col >= colShift) && (col < colShift + fgWidth))
       {
         fgImage >> fred >> fgreen >> fblue;
-      } else
+      }
+      else
       {
         fred = 0;
         fgreen = maxValue;
@@ -104,28 +103,23 @@ int main()
       bgImage >> bred >> bgreen >> bblue;
 
       // determine which pixel to save
-			int red = fred, 
-					green = fgreen, 
-					blue = fblue;
-			if (fred == 0 && fgreen == maxValue && fblue == 0)
-			{
-				red = bred;
-				green = bgreen;
-				blue = bblue;
-			}
+      int red = fred,
+          green = fgreen,
+          blue = fblue;
+      if (fred == 0 && fgreen == maxValue && fblue == 0)
+      {
+        red = bred;
+        green = bgreen;
+        blue = bblue;
+      }
 
       // write it out to the file
       outImage << red << " " << green << " " << blue << " ";
-      
-      // move to the next col
-      col += 1;
     }
-
-    // move to next row
-    row += 1;
   }
 
-  cout << "Image saved to " << outName << endl << endl;
+  cout << "Image saved to " << outName << endl
+       << endl;
 
   return 0;
 }
