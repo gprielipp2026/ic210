@@ -4,6 +4,8 @@
  * Simulates dealing cards 
  */
 #include <iostream>
+#include <cstdlib>
+#include <cmath>
 using namespace std;
 
 int cardvalue(int suit, int facevalue);
@@ -11,6 +13,9 @@ int* gencards();
 void printcards(int* cards, int length);
 int deal(int* length, int** cards);
 void displaygame(int* player, int playerLen, int* dealer, int dealerLen);
+void swap(int* a, int* b);
+void shuffle(int* cards, int length);
+string face(int card);
 
 /*
  * Suits: 1 = ♣, 2 = ♦, 3 = ♥, 4 = ♠
@@ -19,12 +24,27 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen);
 
 int main()
 {
+  // get and set the seed
+  int seed = 1;
+  char shuffleCMD;
+  cout << "Shuffle: [n | u <seed>]: ";
+  cin >> shuffleCMD;
+  
+  // see if a seed was given
+  if(shuffleCMD == 'u')
+  {
+    cin >> seed;
+  }
+
+  // set the seed
+  srand(seed);
+
   // get the cards
   int* cards = gencards();
   int numCards = 52;
 
-  // display the cards
-  printcards(cards, numCards);
+  // shuffle the cards
+  shuffle(cards, numCards);
 
   // the two hands
   int* player = new int[52];
@@ -138,9 +158,83 @@ int deal(int* length, int** cards)
 void displaygame(int* player, int playerLen, int* dealer, int dealerLen)
 {
   cout << endl;
-  cout << "Player: ";
-  printcards(player, playerLen);
-  cout << "Dealer: ";
-  printcards(dealer, dealerLen);
-  cout << endl;
+  cout << " Player Dealer" << endl;
+  // go row by row
+  for(int i = 0; i < max(playerLen, dealerLen); i++)
+  {
+    cout << "|  ";
+    if(i < playerLen)
+    {
+      cout << face(player[i]);
+    }
+    else
+    {
+      cout << "  ";
+    }
+    cout << "  |  ";
+    if(i < dealerLen)
+    {
+      cout << face(dealer[i]);
+    }
+    else
+    {
+      cout << "  ";
+    }
+    cout << "  |" << endl;
+  }
+}
+
+// swap two ints at their respective addresses
+void swap(int* a, int* b)
+{
+  int tmp = *b;
+  *b = *a;
+  *a = tmp;
+}
+
+// shuffles a deck of cards with a given length
+void shuffle(int* cards, int length)
+{
+  // algorithm provided by project
+  for(int i = 0; i < length; i++)
+  {
+    int j = rand() % length;
+    swap(&cards[i], &cards[j]);
+  }
+}
+
+string face(int card)
+{
+  string out = "";
+  int faceval = card % 100;
+  int suit = card / 100;
+
+  if(faceval == 11)
+    out += 'J';
+  else if(faceval == 12)
+    out += 'Q';
+  else if(faceval == 13)
+    out += 'K';
+  else if(faceval == 14)
+    out += 'A';
+  else
+  {
+    // make int to string
+    while(faceval > 0)
+    {
+      out += '0' + faceval%10;
+      faceval /= 10;
+    }
+  }
+
+  if(suit == 1)
+    out += "\u2663";
+  else if(suit == 2)
+    out += "\u2666";
+  else if(suit == 3)
+    out += "\u2665";
+  else if(suit == 4)
+    out += "\u2660";
+
+  return out;
 }

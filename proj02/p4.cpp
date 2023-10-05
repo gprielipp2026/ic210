@@ -4,6 +4,7 @@
  * Simulates dealing cards 
  */
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 int cardvalue(int suit, int facevalue);
@@ -11,6 +12,8 @@ int* gencards();
 void printcards(int* cards, int length);
 int deal(int* length, int** cards);
 void displaygame(int* player, int playerLen, int* dealer, int dealerLen);
+void swap(int* a, int* b);
+void shuffle(int* cards, int length);
 
 /*
  * Suits: 1 = ♣, 2 = ♦, 3 = ♥, 4 = ♠
@@ -19,9 +22,27 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen);
 
 int main()
 {
+  // get and set the seed
+  int seed = 1;
+  char shuffleCMD;
+  cout << "Shuffle: [n | u <seed>]: ";
+  cin >> shuffleCMD;
+  
+  // see if a seed was given
+  if(shuffleCMD == 'u')
+  {
+    cin >> seed;
+  }
+
+  // set the seed
+  srand(seed);
+
   // get the cards
   int* cards = gencards();
   int numCards = 52;
+
+  // shuffle the cards
+  shuffle(cards, numCards);
 
   // display the cards
   printcards(cards, numCards);
@@ -143,4 +164,23 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen)
   cout << "Dealer: ";
   printcards(dealer, dealerLen);
   cout << endl;
+}
+
+// swap two ints at their respective addresses
+void swap(int* a, int* b)
+{
+  int tmp = *b;
+  *b = *a;
+  *a = tmp;
+}
+
+// shuffles a deck of cards with a given length
+void shuffle(int* cards, int length)
+{
+  // algorithm provided by project
+  for(int i = 0; i < length; i++)
+  {
+    int j = rand() % length;
+    swap(&cards[i], &cards[j]);
+  }
 }
