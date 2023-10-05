@@ -46,8 +46,8 @@ int rolldie()
 
   do {
     // this more evenly distrubutes 1-6 than rand()%6 would
-    die = (rand() % 8) + 1; // 1-8
-  } while(die > 6);
+    die = rand() % 8;
+  } while(die == 0 || die == 7);
 
   return die;
 }

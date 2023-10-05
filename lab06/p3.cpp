@@ -34,8 +34,8 @@ int rolldie()
 
   do {
     // this more evenly distrubutes 1-6 than rand()%6 would
-    die = (rand() % 8) + 1; // 1-8
-  } while(die > 6);
+    die = rand() % 8;
+  } while(die == 0 || die == 7);
 
   return die;
 }
@@ -67,12 +67,16 @@ void playgame()
   // var for the current sum of the game (ie each round)
   int game;
   int setpoint = 0;
-  while( (game = throwdice(setpoint) > 0 ) {
+  while( (game = throwdice(setpoint)) > 0 ) {
     // neither house nor player have won
-    cout << " roll again" << endl;
+    if(setpoint > 0) cout << " roll again" << endl;
 
     // this means that the setpoint is in 4,5,6,8,9,10
-    if(setpoint == 0) setpoint = game;
+    if(setpoint == 0) 
+    {
+      setpoint = game;
+      cout << " setpoint is " << setpoint << "!" << endl;
+    }
   }
 
   // determine who won
