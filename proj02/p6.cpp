@@ -1,7 +1,7 @@
 /*
- * Filename: p5.cpp
+ * Filename: p6.cpp
  * Name: MIDN GEORGE PRIELIPP (265112)
- * pretty print 
+ * scores 
  */
 #include <iostream>
 #include <cstdlib>
@@ -16,6 +16,7 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen);
 void swap(int* a, int* b);
 void shuffle(int* cards, int length);
 string face(int card);
+int sumhand(int* cards, int length);
 
 /*
  * Suits: 1 = ♣, 2 = ♦, 3 = ♥, 4 = ♠
@@ -67,8 +68,9 @@ int main()
 
   // game loop
   char cmd;
-  for(int round = 1; round <= 3; round++)
-  {
+  bool bothStand = false;
+  int round = 1;
+  while(!bothStand){
     // get hit or stand: player
     cout << "Round " << round << " Player's turn" << endl;
     cout << "hit or stand ? [h/s] ";
@@ -78,9 +80,17 @@ int main()
     {
       int card = deal(&numCards, &cards);
       player[numPlayerCards++] = card;
+      bothStand = false;
+    } 
+    else
+    {
+      bothStand = true;
     }
 
     displaygame(player, numPlayerCards, dealer, numDealerCards);
+
+    // make sure I don't need to quit game
+    if(bothStand) break;
 
     // get hit or stand: dealer
     cout << "Round " << round << " Dealer's turn" << endl;
@@ -91,12 +101,17 @@ int main()
     {
       int card = deal(&numCards, &cards);
       dealer[numDealerCards++] = card;
+      bothStand = false;
+    }
+    else
+    {
+      bothStand = bothStand && true;
     }
 
     displaygame(player, numPlayerCards, dealer, numDealerCards);
-  }
 
-  // go for 3 rounds
+    round++;
+  }
 
   return 0;
 }
@@ -159,7 +174,7 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen)
 {
   cout << endl;
   cout << " Player Dealer" << endl;
-  // go row by row
+  // go row by row and print out the hands
   for(int i = 0; i < max(playerLen, dealerLen); i++)
   {
     cout << "| ";
@@ -182,6 +197,9 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen)
     }
     cout << "  |" << endl;
   }
+  // print out the sum of the hands
+  cout << "Player " << sumhand(player, playerLen) << ", ";
+  cout << "Dealer " << sumhand(dealer, dealerLen) << endl;
 }
 
 // swap two ints at their respective addresses
@@ -243,4 +261,19 @@ string face(int card)
     out += "\u2660";
 
   return out;
+}
+
+int sumhand(int* cards, int length)
+{
+  int sum = 0;
+  for(int i = 0; i < length; i++)
+  {
+    int val = cards[i] % 100;
+    // ace
+    if(val == 14) val = 1;
+    // face cards
+    if(val > 10) val = 10;
+    sum += val;
+  }
+  return sum;
 }

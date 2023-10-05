@@ -1,7 +1,7 @@
 /*
- * Filename: p1.cpp
+ * Filename: p3.cpp
  * Name: MIDN GEORGE PRIELIPP (265112)
- * Simulates dealing cards 
+ * hit or stand 
  */
 #include <iostream>
 using namespace std;

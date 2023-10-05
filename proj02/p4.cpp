@@ -1,7 +1,7 @@
 /*
- * Filename: p1.cpp
+ * Filename: p4.cpp
  * Name: MIDN GEORGE PRIELIPP (265112)
- * Simulates dealing cards 
+ * shuffling the deck 
  */
 #include <iostream>
 #include <cstdlib>

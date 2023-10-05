@@ -1,5 +1,5 @@
 /*
- * Filename: p1.cpp
+ * Filename: p2.cpp
  * Name: MIDN GEORGE PRIELIPP (265112)
  * Simulates dealing cards 
  */
