@@ -6,17 +6,19 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include <unistd.h>
 using namespace std;
 
 int cardvalue(int suit, int facevalue);
 int* gencards();
 void printcards(int* cards, int length);
 int deal(int* length, int** cards);
-void displaygame(int* player, int playerLen, int* dealer, int dealerLen);
+void displaygame(int *player, int playerLen, int *dealer, int dealerLen, bool showFirstDealerCard);
 void swap(int* a, int* b);
 void shuffle(int* cards, int length);
 string face(int card);
 int sumhand(int* cards, int length);
+int game();
 
 /*
  * Suits: 1 = ♣, 2 = ♦, 3 = ♥, 4 = ♠
@@ -36,80 +38,33 @@ int main()
   {
     cin >> seed;
   }
+  srand(seed);
+
+  // go until someone busts or wins (ie no ties)
+  int result;
+  while ((result = game()) == 0)
+  {
+  }
+
+  // determine who won/lost
+  switch (result)
+  {
+  case -1:
+    cout << "Player busts, Dealer wins" << endl;
+    break;
+  case -2:
+    cout << "Dealer busts, Player wins" << endl;
+    break;
+  case 1:
+    cout << "Player wins" << endl;
+    break;
+  case 2:
+    cout << "Dealer wins" << endl;
+    break;
+  }
 
   // set the seed
   srand(seed);
-
-  // get the cards
-  int* cards = gencards();
-  int numCards = 52;
-
-  // the two hands
-  int* player = new int[52];
-  int* dealer = new int[52];
-  dealer[0] = -1;
-  int numPlayerCards = 0;
-  int numDealerCards = 1;
-
-  // initialize player and dealer's hands
-  for(int i = 0; i < 4; i++)
-  {
-    int card = deal(&numCards, &cards);
-    if(i%2)
-      dealer[numDealerCards++] = card;
-    else
-      player[numPlayerCards++] = card;
-  }
-
-  // initial game state
-  displaygame(player, numPlayerCards, dealer, numDealerCards);
-
-  // game loop
-  char cmd;
-  bool bothStand = false;
-  int round = 1;
-  while(!bothStand){
-    // get hit or stand: player
-    cout << "Round " << round << " Player's turn" << endl;
-    cout << "hit or stand ? [h/s] ";
-    cin >> cmd;
-
-    if(cmd == 'h')
-    {
-      int card = deal(&numCards, &cards);
-      player[numPlayerCards++] = card;
-      bothStand = false;
-    } 
-    else
-    {
-      bothStand = true;
-    }
-
-    displaygame(player, numPlayerCards, dealer, numDealerCards);
-
-    // make sure I don't need to quit game
-    if(bothStand) break;
-
-    // get hit or stand: dealer
-    cout << "Round " << round << " Dealer's turn" << endl;
-    cout << "hit or stand ? [h/s] ";
-    cin >> cmd;
-
-    if(cmd == 'h')
-    {
-      int card = deal(&numCards, &cards);
-      dealer[numDealerCards++] = card;
-      bothStand = false;
-    }
-    else
-    {
-      bothStand = bothStand && true;
-    }
-
-    displaygame(player, numPlayerCards, dealer, numDealerCards);
-
-    round++;
-  }
 
   return 0;
 }
@@ -170,7 +125,7 @@ int deal(int* length, int** cards)
   return card;
 }
 
-void displaygame(int* player, int playerLen, int* dealer, int dealerLen)
+void displaygame(int *player, int playerLen, int *dealer, int dealerLen, bool showFirstDealerCard)
 {
   cout << endl;
   cout << " Player Dealer" << endl;
@@ -189,7 +144,10 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen)
     cout << "  | ";
     if(i < dealerLen)
     {
-      cout << face(dealer[i]);
+      if ((i == 0 && showFirstDealerCard) || i > 0)
+        cout << face(dealer[i]);
+      else
+        cout << " **";
     }
     else
     {
@@ -197,9 +155,6 @@ void displaygame(int* player, int playerLen, int* dealer, int dealerLen)
     }
     cout << "  |" << endl;
   }
-  // print out the sum of the hands
-  cout << "Player " << sumhand(player, playerLen) << ", ";
-  cout << "Dealer " << sumhand(dealer, dealerLen) << endl;
 }
 
 // swap two ints at their respective addresses
@@ -266,14 +221,147 @@ string face(int card)
 int sumhand(int* cards, int length)
 {
   int sum = 0;
+  bool sawAce = false;
   for(int i = 0; i < length; i++)
   {
     int val = cards[i] % 100;
+    if (val == 14)
+      sawAce = true;
     // ace
     if(val == 14) val = 1;
     // face cards
     if(val > 10) val = 10;
     sum += val;
   }
+  // aces only get counted as 11 if the total sum could potentially be 21 with two cards
+  if (sawAce && sum <= 11)
+    sum += 10;
+
   return sum;
+}
+
+/*
+ * Output:  1 = player win
+ *          2 = dealer win
+ *          0 = tie (same scores)
+ *         -1 = player bust
+ *         -2 = dealer bust
+ */
+int game()
+{
+  // get the cards
+  int *cards = gencards();
+  int numCards = 52;
+
+  // the two hands
+  int *player = new int[52];
+  int *dealer = new int[52];
+  int numPlayerCards = 0;
+  int numDealerCards = 0;
+
+  // initialize player and dealer's hands
+  for (int i = 0; i < 4; i++)
+  {
+    int card = deal(&numCards, &cards);
+    if (i % 2)
+      dealer[numDealerCards++] = card;
+    else
+      player[numPlayerCards++] = card;
+  }
+
+  // initial game state
+  displaygame(player, numPlayerCards, dealer, numDealerCards, false);
+
+  // game loop
+  char cmd;
+  bool playerStand = false;
+  bool dealerStand = false;
+  int round = 1;
+  int playerSum, dealerSum;
+  while (!(playerStand && dealerStand))
+  {
+    // get hit or stand: player
+    cout << "Round " << round << " Player's turn" << endl;
+    cout << "hit or stand ? [h/s] ";
+    cin >> cmd;
+
+    // handle player hit/stand
+    if (cmd == 'h')
+    {
+      int card = deal(&numCards, &cards);
+      player[numPlayerCards++] = card;
+      playerStand = false;
+    }
+    else if (cmd == 's')
+    {
+      playerStand = true;
+    }
+    playerSum = sumhand(player, numPlayerCards); // used later
+
+    displaygame(player, numPlayerCards, dealer, numDealerCards, false);
+
+    // make sure I don't need to quit game
+    if (dealerStand && playerStand && round > 1)
+      break;
+
+    // get hit or stand: dealer
+    cout << "Round " << round << " Dealer's turn" << endl;
+    cout << "hit or stand? [h/s] ";
+
+    // decide dealer's move
+    dealerSum = sumhand(dealer, numDealerCards); // used later
+    if (dealerSum < 17)
+      cmd = 'h';
+    else
+      cmd = 's';
+    // pause for dramatic effect
+    sleep(1);
+
+    cout << cmd << endl;
+
+    // handle dealer's choice
+    if (cmd == 'h')
+    {
+      int card = deal(&numCards, &cards);
+      dealer[numDealerCards++] = card;
+      dealerStand = false;
+    }
+    else if (cmd == 's')
+    {
+      dealerStand = true;
+    }
+    // recalculate to make sure I didn't bust
+    dealerSum = sumhand(dealer, numDealerCards); // used later
+
+    if (dealerSum > 21 || playerSum > 21)
+    {
+      // bust
+      displaygame(player, numPlayerCards, dealer, numDealerCards, true);
+      break; // get out of loop
+    }
+
+    displaygame(player, numPlayerCards, dealer, numDealerCards, dealerStand && playerStand);
+
+    round++;
+  }
+
+  // check game state:
+  // draw
+  if (playerSum == dealerSum)
+    return 0;
+  // player bust condition
+  else if (playerSum > 21)
+    return -1;
+  // dealer bust
+  else if (dealerSum > 21)
+    return -2;
+  // check player win condition
+  else if (playerSum == 21 || playerSum > dealerSum)
+    return 1;
+  // dealer win
+  else if (dealerSum == 21 || dealerSum > playerSum)
+    return 2;
+  // gets rid of compiler warnings
+  else
+    return 3; // I messed up if we get here :D
 }
