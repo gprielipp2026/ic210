@@ -1,3 +1,7 @@
+/* Filename: hw.cpp
+ * Name: MIDN GEORGE PRIELIPP (265112)
+ * implements swapping elements in an array based on commands from the user
+ */
 #include <iostream>
 using namespace std;
 
