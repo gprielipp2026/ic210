@@ -266,14 +266,21 @@ string face(int card)
 int sumhand(int* cards, int length)
 {
   int sum = 0;
+  bool sawAce = false;
   for(int i = 0; i < length; i++)
   {
     int val = cards[i] % 100;
-    // ace
-    if(val == 14) val = 1;
-    // face cards
+    if(val == 14)
+    {
+      sawAce = true;
+      val = 1;
+    }
     if(val > 10) val = 10;
     sum += val;
   }
+  // aces only get counted as 11 if the total sum could potentially be 21 with two cards
+  if(sawAce && sum <= 11)
+    sum += 10;
+
   return sum;
 }

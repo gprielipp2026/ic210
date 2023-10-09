@@ -50,10 +50,10 @@ int main()
   switch (result)
   {
   case -1:
-    cout << "Player busts, Dealer wins" << endl;
+    cout << "Player busts, dealer wins" << endl;
     break;
   case -2:
-    cout << "Dealer busts, Player wins" << endl;
+    cout << "Dealer busts, player wins" << endl;
     break;
   case 1:
     cout << "Player wins" << endl;
