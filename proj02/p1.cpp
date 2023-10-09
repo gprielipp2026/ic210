@@ -8,7 +8,7 @@ using namespace std;
 
 int cardvalue(int suit, int facevalue);
 int* gencards();
-void printcards(int* cards);
+void printcards(int* cards, int length);
 
 /*
  * Suits: 1 = ♣, 2 = ♦, 3 = ♥, 4 = ♠
