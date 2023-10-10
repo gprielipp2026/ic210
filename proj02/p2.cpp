@@ -66,6 +66,7 @@ int main()
         printcards(dealer, numDealerCards);
       }
     }
+    break;
   }
 
   return 0;

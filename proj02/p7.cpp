@@ -139,7 +139,7 @@ void displaygame(int *player, int playerLen, int *dealer, int dealerLen, bool sh
     }
     else
     {
-      cout << "  ";
+      cout << "   ";
     }
     cout << "  | ";
     if(i < dealerLen)
@@ -151,7 +151,7 @@ void displaygame(int *player, int playerLen, int *dealer, int dealerLen, bool sh
     }
     else
     {
-      cout << "  ";
+      cout << "   ";
     }
     cout << "  |" << endl;
   }
@@ -278,6 +278,8 @@ int game()
   bool dealerStand = false;
   int round = 1;
   int playerSum, dealerSum;
+  playerSum = sumhand(player, numPlayerCards);
+  dealerSum = sumhand(dealer, numDealerCards);
   while (!(playerStand && dealerStand))
   {
     // get hit or stand: player
@@ -298,11 +300,21 @@ int game()
     }
     playerSum = sumhand(player, numPlayerCards); // used later
 
-    displaygame(player, numPlayerCards, dealer, numDealerCards, false);
-
     // make sure I don't need to quit game
     if (dealerStand && playerStand && round > 1)
+    {
+      displaygame(player, numPlayerCards, dealer, numDealerCards, true);
       break;
+    }
+    // other instance when I could need to quit
+    if (dealerSum > 21 || playerSum > 21)
+    {
+      // bust
+      displaygame(player, numPlayerCards, dealer, numDealerCards, true);
+      break; // get out of loop
+    }
+    // display changes made by player
+    displaygame(player, numPlayerCards, dealer, numDealerCards, false);
 
     // get hit or stand: dealer
     cout << "Round " << round << " Dealer's turn" << endl;

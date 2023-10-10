@@ -68,9 +68,9 @@ int main()
 
   // game loop
   char cmd;
-  bool bothStand = false;
+  bool playerStand = false, dealerStand = false;
   int round = 1;
-  while(!bothStand){
+  while(!(playerStand && dealerStand)){
     // get hit or stand: player
     cout << "Round " << round << " Player's turn" << endl;
     cout << "hit or stand ? [h/s] ";
@@ -80,17 +80,17 @@ int main()
     {
       int card = deal(&numCards, &cards);
       player[numPlayerCards++] = card;
-      bothStand = false;
+      playerStand = false;
     } 
     else
     {
-      bothStand = true;
+      playerStand = true;
     }
 
     displaygame(player, numPlayerCards, dealer, numDealerCards);
 
     // make sure I don't need to quit game
-    if(bothStand) break;
+    if(playerStand && dealerStand) break;
 
     // get hit or stand: dealer
     cout << "Round " << round << " Dealer's turn" << endl;
@@ -101,11 +101,11 @@ int main()
     {
       int card = deal(&numCards, &cards);
       dealer[numDealerCards++] = card;
-      bothStand = false;
+      dealerStand = false;
     }
     else
     {
-      bothStand = bothStand && true;
+      dealerStand = true;
     }
 
     displaygame(player, numPlayerCards, dealer, numDealerCards);
