@@ -37,15 +37,9 @@ int main()
     {
       dot += X[i] * Y[i];
       // X
-      if(isneg(X[i]))
-          cout << "(" << X[i] << ")" << " * ";
-      else
-          cout << X[i] << " * ";
+      cout << X[i] << " * ";
       // Y
-      if(isneg(Y[i]))
-          cout << "(" << Y[i] << ")";
-      else
-          cout << Y[i];
+      cout << Y[i];
       
       if(i < N-1)
           cout << " + ";
