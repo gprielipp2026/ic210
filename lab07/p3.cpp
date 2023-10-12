@@ -18,7 +18,7 @@ void reverse(int*, int, int);
 int main()
 {
   // intro
-  cout << "Welcome to Swap and Reverse!" << endl;
+  cout << "Welcome to SWARE!" << endl;
   cout << "board> ";
 
   char c;
