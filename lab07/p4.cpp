@@ -131,7 +131,6 @@ void print(int* arr, int len)
     }
     cout << endl;
   }
-  cout << endl;
 
   // print out the "-----"
   for(int i = 0; i <= 2*len; i++)
