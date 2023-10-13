@@ -10,7 +10,7 @@ int cardvalue(int suit, int facevalue);
 int* gencards();
 void printcards(int* cards, int length);
 string command();
-int deal(int* length, int** cards);
+int deal(int* index, int* cards);
 
 /*
  * Suits: 1 = ♣, 2 = ♦, 3 = ♥, 4 = ♠
@@ -21,6 +21,7 @@ int main()
 {
   // get the cards
   int* cards = gencards();
+  int index = 0;
   int numCards = 52;
 
   // display the cards
@@ -42,7 +43,7 @@ int main()
       // deal
       if(cmd[0] == 'd')
       {
-        int card = deal(&numCards, &cards);
+        int card = deal(&index, cards);
         player[numPlayerCards++] = card;
       }
       // or print
@@ -57,7 +58,7 @@ int main()
       // deal
       if(cmd[0] == 'd')
       {
-        int card = deal(&numCards, &cards);
+        int card = deal(&index, cards);
         dealer[numDealerCards++] = card;
       }
       // or print
@@ -66,8 +67,12 @@ int main()
         printcards(dealer, numDealerCards);
       }
     }
-    break;
   }
+
+  delete [] cards;
+  delete [] player;
+  delete [] dealer;
+
 
   return 0;
 }
@@ -120,17 +125,9 @@ string command()
 }
 
 // takes the top card and removes it from cards
-int deal(int* length, int** cards)
+int deal(int* index, int* cards)
 {
-  if(*length - 1 < 0) return -1; // error out of here
+  if(*index >= 52) return -1; // error out of here
 
-  // get the top card
-  int card = *cards[0];
-
-  // clean memory and shrink deck of cards
-  *cards[0] = 0;
-  *cards = (*cards + 1);
-  *length -= 1;
-
-  return card;
+  return cards[(*index)++];
 }

@@ -12,7 +12,7 @@ using namespace std;
 int cardvalue(int suit, int facevalue);
 int* gencards();
 void printcards(int* cards, int length);
-int deal(int* length, int** cards);
+int deal(int* index, int* cards);
 void displaygame(int *player, int playerLen, int *dealer, int dealerLen, bool showFirstDealerCard);
 void swap(int* a, int* b);
 void shuffle(int* cards, int length);
@@ -34,7 +34,8 @@ int main()
   cin >> shuffleCMD;
   
   // see if a seed was given
-  if(shuffleCMD == 'u')
+  if(shuffleCMD == 'u')int deal(int* length, int** cards);
+
   {
     cin >> seed;
   }
@@ -110,19 +111,11 @@ void printcards(int* cards, int length)
 }
 
 // takes the top card and removes it from cards
-int deal(int* length, int** cards)
+int deal(int* index, int* cards)
 {
-  if(*length - 1 < 0) return -1; // error out of here
+  if(*index >= 52) return -1; // error out of here
 
-  // get the top card
-  int card = *cards[0];
-
-  // clean memory and shrink deck of cards
-  *cards[0] = 0;
-  *cards = (*cards + 1);
-  *length -= 1;
-
-  return card;
+  return cards[(*index)++];
 }
 
 void displaygame(int *player, int playerLen, int *dealer, int dealerLen, bool showFirstDealerCard)
@@ -250,7 +243,8 @@ int sumhand(int* cards, int length)
 int game()
 {
   // get the cards
-  int *cards = gencards();
+  int* cards = gencards();
+  int index = 0;
   int numCards = 52;
 
   // the two hands
@@ -262,7 +256,7 @@ int game()
   // initialize player and dealer's hands
   for (int i = 0; i < 4; i++)
   {
-    int card = deal(&numCards, &cards);
+    int card = deal(&index, cards);
     if (i % 2)
       dealer[numDealerCards++] = card;
     else
@@ -290,7 +284,7 @@ int game()
     // handle player hit/stand
     if (cmd == 'h')
     {
-      int card = deal(&numCards, &cards);
+      int card = deal(&index, cards);
       player[numPlayerCards++] = card;
       playerStand = false;
     }
@@ -334,7 +328,7 @@ int game()
     // handle dealer's choice
     if (cmd == 'h')
     {
-      int card = deal(&numCards, &cards);
+      int card = deal(&index, cards);
       dealer[numDealerCards++] = card;
       dealerStand = false;
     }
@@ -356,6 +350,10 @@ int game()
 
     round++;
   }
+
+  delete [] cards;
+  delete [] player;
+  delete [] dealer;
 
   // check game state:
   // draw
