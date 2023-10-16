@@ -46,6 +46,9 @@ int main()
       cout << col << " ";
   }
   cout << endl;
+  
+  // clean memory
+  delete [] colsums;
 
   return 0;
 }
