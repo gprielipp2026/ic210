@@ -73,10 +73,10 @@ void display_results(string candidate1, int count1,
 {
   if(count1 > count2)
     cout << candidate1 << " wins with " << count1 
-         << " of " << count1 + count2 << " votes" << endl;
+         << " out of " << count1 + count2 << " votes" << endl;
   else if(count2 > count1)
-    cout << candidate2 << " win with " << count2
-         << " of " << count1 + count2 << " votes" << endl;
+    cout << candidate2 << " wins with " << count2
+         << " out of " << count1 + count2 << " votes" << endl;
   else if(count1 == count2)
     cout << "Tie!" << endl;
 }
