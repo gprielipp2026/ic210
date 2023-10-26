@@ -1,0 +1,7 @@
+inY.txt
+transfer $200 223 to 198
+show 223
+show 222
+transfer $200 222 to 198
+show 222
+transfer $200 222 to 198

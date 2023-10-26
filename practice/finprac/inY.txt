@@ -1,0 +1,12 @@
+10 accounts
+983 Ringo Starr $981.87
+879 Marvin Gaye $673.23
+982 Nick Cave $3289.89
+901 Levon Helm $980.22
+231 Jimi Hendricks $700.21
+289 Janice Joplin $983.88
+222 Aretha Franklin $387.87
+198 Joe Walsh $123.88
+783 Rick James $1209.23
+823 Jeff Beck $393.34
+

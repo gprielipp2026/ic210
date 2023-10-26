@@ -2,6 +2,8 @@
  * Name: MIDN GEORGE PRIELIPP (265112)
  * creates infinite series and sees how many steps until it repeats */
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 int main()
@@ -11,19 +13,15 @@ int main()
   cout << "> ";
   cin >> a >> b;
 
-  int start = a;
-  int xold, xnew;
-  xnew = start;
-  xold = a % b;
-  int steps = 0;
+  int x = a;
+  vector<int> series;
+
   do
   {
-    xnew = (xold * a) % b;
-    xold = xnew;
-    steps ++;
-  } while(xnew != start);
-
-  cout << "repeat after " << steps << " steps" << endl;
+    series.push_back(x);
+    x = (series[series.size()-1] * a) % b;
+  } while(find(series.begin(), series.end(), x) == series.end());
+  cout << "repeat after " << series.size() << " steps" << endl;
 
   return 0;
 }

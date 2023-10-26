@@ -1,0 +1,8 @@
+inX.txt
+show 45672
+show 67878
+show 31415
+transfer $100 45672 to 67878
+show 45672
+show 67878
+transfer $100 45672 to 67878
