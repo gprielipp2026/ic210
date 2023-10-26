@@ -1,0 +1,28 @@
+11 x 21
+draw row 0
+draw row 2
+draw row 4
+draw row 6
+draw row 8
+draw row 10
+draw col 0
+draw col 4
+draw col 8
+draw col 12
+draw col 16
+draw col 20
+draw @ 1 2
+draw @ 5 2
+draw @ 9 2
+draw @ 3 6
+draw @ 7 6
+draw @ 1 10
+draw @ 5 10
+draw @ 9 10
+draw @ 3 14
+draw @ 7 14
+draw @ 1 18
+draw @ 5 18
+draw @ 9 18
+show
+quit
