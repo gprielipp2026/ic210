@@ -18,8 +18,12 @@ car* readcars(ifstream&, int&);
 
 int main()
 {
+  // get the file to open
+  string fn;
+  cin >> fn;
+
   // open the file and check if its open
-  ifstream fin("cardata.txt");
+  ifstream fin(fn);
   if(!fin)
   {
     cout << "File didn't open" << endl;
