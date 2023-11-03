@@ -26,7 +26,7 @@ struct Point3
     return out;
   }
 
-  int operator*(Point3& b)
+  double operator*(Point3& b)
   {
     return this->x*b.x + this->y*b.y + this->z*b.z;
   }
