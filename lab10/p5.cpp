@@ -159,16 +159,32 @@ istream& operator>>(istream& in, Point& pt)
 /* FUNCTION */
 double rand_dir(double curdir)
 {
-  int r = rand() % 5;
-  if(r == 0)
-    return NORTH;
-  else if(r == 1)
-    return EAST;
-  else if(r == 2)
-    return SOUTH;
-  else if(r == 3)
-    return WEST;
-  else if(r == 4)
-    return curdir;
-  return EAST;
+  // should we turn?
+  bool doTurn = (rand()%5) == 1;
+  
+  if(doTurn)
+  {
+    // determine which way to turn
+    int r = rand()%2;
+    bool isVert = curdir == NORTH || curdir == SOUTH;
+
+    // determine new dir
+    // these conditions are described in p5.2 (bullet points) in the requirements
+    if(isVert)
+    {
+      if(r)
+        return WEST;
+      else
+        return EAST;
+    }
+    else
+    {
+      if(r)
+        return NORTH;
+      else
+        return SOUTH;
+    }
+  }  
+
+  return curdir;
 }
