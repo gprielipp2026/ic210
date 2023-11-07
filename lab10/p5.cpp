@@ -1,6 +1,6 @@
-/* p4.cpp
+/* p5.cpp
  * MIDN GEORGE PRIELIPP (265112) 
- * make my points move *RANDOMLY* */
+ * make my points move *RANDOMLY*, but within a border */
 #include "easycurses.h"
 #include <iostream>
 #include <cstdlib>
@@ -11,10 +11,10 @@ using namespace std;
 
 #define NORTH M_PI_2
 #define EAST 0
-#define SOUTH 3*M_PI_4
+#define SOUTH 3*M_PI_2
 #define WEST M_PI
 
-int ROWS, COLS;
+int ROWS = 0, COLS = 0;
 
 /* POINT */
 struct Point
@@ -27,6 +27,7 @@ struct Point
   void display();
   void update(int distance);
   void erase();
+  void bounce();
   Point& operator=(char c);
   friend istream& operator>>(istream& in, Point& pt);
 };
@@ -66,8 +67,9 @@ int main()
   refreshWindow();
   usleep(80000);
 
-  // move the characters around for 20 frames
-  for(int frame = 0; frame < 20; frame++)
+  // move the characters around until the user enters 'q'
+  char c;
+  while((c = inputChar()) != 'q')
   {
     // move the points to the east
     for(int i = 0; i < N; i++)
@@ -103,13 +105,42 @@ void Point::display()
 void Point::update(int distance)
 {
   dir = rand_dir(dir);
-  col += int(distance*cos(dir)) % COLS;
-  row += int(distance*-1*sin(dir)) % ROWS;
+  
+  int dx = int(distance*cos(dir));
+  int dy = int(distance*-1*sin(dir));
+  
+  if(col + dx >= COLS || col + dx < 0)
+  {
+    bounce();
+    dx = int(distance*cos(dir));
+  }
+
+  if(row + dy >= ROWS || row + dy < 0)
+  {
+    bounce();
+    dy = int(distance*cos(dir));
+  }
+
+  col += dx;
+  row += dy;
 }
 
 void Point::erase()
 {
   drawChar(' ', row, col);
+}
+
+void Point::bounce()
+{
+  if(dir == NORTH)
+    dir = SOUTH;
+  else if(dir == SOUTH)
+    dir = NORTH;
+  else if(dir == EAST)
+    dir = WEST;
+  else if(dir == WEST)
+    dir = EAST;
+  
 }
 
 Point& Point::operator=(char c)
@@ -139,4 +170,5 @@ double rand_dir(double curdir)
     return WEST;
   else if(r == 4)
     return curdir;
+  return EAST;
 }
