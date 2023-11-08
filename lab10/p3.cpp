@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <cmath>
+#include <ctime> // needed for the test case 3-*
 using namespace std;
 
 #define NORTH M_PI_2
@@ -31,6 +32,9 @@ struct Point
 
 int main()
 {
+  // needed for the test case 3-*
+  srand(time(0));
+
   // get user input before entering curses
   int N;
   cin >> N;
