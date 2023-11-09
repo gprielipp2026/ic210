@@ -118,7 +118,7 @@ void Point::update(int distance)
   if(row + dy >= ROWS || row + dy < 0)
   {
     bounce();
-    dy = int(distance*cos(dir));
+    dy = int(distance*-1*sin(dir));
   }
 
   col += dx;
