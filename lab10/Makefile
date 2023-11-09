@@ -1,10 +1,7 @@
-partscpp=$(wildcard p*.cpp)
-parts=$(partscpp:p%.cpp=p%)
+src=$(wildcard p*.cpp)
+parts=$(src:p%.cpp=p%)
 
 all: $(parts)
-
-clean:
-	$(RM) $(RF) $(parts)
 
 p1: p1.cpp
 	g++ p1.cpp easycurses.cpp -l ncurses -o p1
