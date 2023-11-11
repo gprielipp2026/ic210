@@ -26,6 +26,9 @@ struct Board
   bool isWin;
   bool collidedEnemy;
 
+  int shipsPerSpawn;
+  int huntersPerSpawn;
+
   int ROWS, COLS;
   char** board; // the spots and stuff, what will be displayed
   Pos player;

@@ -58,10 +58,10 @@ istream& operator>>(istream& in, Board& b)
   // also print out the spawn spots of the spawnpts
   // AND set the space ships
   // AND set the Hunters
-  b.numships = b.numspawnpts * 5;
+  b.numships = b.numspawnpts * b.shipsPerSpawn;
   b.ships = new Enemy[b.numships];
 
-  b.numhunters = b.numspawnpts;
+  b.numhunters = b.numspawnpts * b.huntersPerSpawn;
   b.hunters = new Enemy[b.numhunters];
 
   Node *spawnpt = b.spawnpts;
@@ -73,13 +73,16 @@ istream& operator>>(istream& in, Board& b)
       cout << " ";
 
     // create the ships
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < b.shipsPerSpawn; j++)
     {
-      b.ships[i * 5 + j] = Enemy{spawnpt->pos, rand() % 4};
+      b.ships[i * b.shipsPerSpawn + j] = Enemy{spawnpt->pos, rand() % 4};
     }
 
     // create the hunter
-    b.hunters[i] = Enemy{spawnpt->pos, rand() % 4};
+    for (int j = 0; j < b.huntersPerSpawn; j++)
+    {
+      b.hunters[i * b.huntersPerSpawn + j] = Enemy{spawnpt->pos, rand() % 4};
+    }
 
     spawnpt = spawnpt->next;
   }  
@@ -104,8 +107,6 @@ void display(Board b)
 
   // draw player
   drawChar('P', b.player.row, b.player.col);
-
-  drawChar(b.playerdir + '0', b.ROWS, 1);
 
   // draw the enemies
   // ships
