@@ -125,4 +125,7 @@ int game(int maxscore, string fn, int shipsPerSpawn, int huntersPerSpawn)
 
   // free memory
   free(b);
+
+  // get rid of pesky warning
+  return -10;
 }

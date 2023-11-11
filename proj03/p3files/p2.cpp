@@ -47,15 +47,14 @@ int main()
   // the game loop
   char kc;
   int iters = 0;
-  bool isWin = false;
-  while( (kc = inputChar()) != 'y' && !isWin)
+  while ((kc = inputChar()) != 'y' && !b.isWin)
   {
     b.playerdir = dir(b, kc);
 
     // if I'm not stopped, move
     if(!b.isStopped)
-      isWin = move(b);
-    
+      move(b);
+
     // display the board
     display(b);
     
@@ -65,7 +64,7 @@ int main()
 
   endCurses();
 
-  if(isWin)
+  if (b.isWin)
     win(iters);
 
   // free memory

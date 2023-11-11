@@ -297,4 +297,7 @@ Pos collision(Board &b, Enemy &enemy, Pos test)
   {
     return test;
   }
+
+  // get rid of pesky warning
+  return Pos{-1, -1};
 }
