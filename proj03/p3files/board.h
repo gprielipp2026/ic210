@@ -13,23 +13,44 @@ using namespace std;
 #define SOUTH 2
 #define WEST 3
 
+/* ENEMY */
+struct Enemy
+{
+  Pos pos;
+  int enemydir;
+};
+
 /* BOARD */
 struct Board
 {
+  bool isWin;
+  bool collidedEnemy;
+
   int ROWS, COLS;
   char** board; // the spots and stuff, what will be displayed
   Pos player;
   int playerdir;
   Pos goal;
   bool isStopped;
-  int numenemies;
-  Node* enemies; // linked list
+  int numspawnpts;
+  Node *spawnpts; // linked list
+
+  /* the ENEMIES */
+  // space ships
+  int numships;
+  Enemy *ships;
+  // hunters
+  int numhunters;
+  Enemy *hunters;
 };
 
 /* FUNCTIONS */
 istream& operator>>(istream& in, Board& b);
 void display(Board b);
-void free(Board b);
+void free(Board &b);
 int dir(Board& b, int keycode);
-bool move(Board& b);
+void move(Board &b);
+void moveships(Board &b);
+void movehunters(Board &b);
 Pos collision(Board& b, Pos test);
+Pos collision(Board &b, Enemy &enemy, Pos test);

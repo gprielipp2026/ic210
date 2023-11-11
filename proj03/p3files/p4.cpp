@@ -1,6 +1,6 @@
-/* p3.cpp
+/* p2.cpp
  * MIDN GEORGE PRIELIPP (265112)
- * implement the space ships! */
+ * implement the Hunters! */
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -59,6 +59,9 @@ int main()
 
     // move the ships
     moveships(b);
+
+    // move the hunters
+    movehunters(b);
 
     // display the board
     display(b);
