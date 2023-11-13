@@ -7,7 +7,7 @@ clean:
 	$(RM) $(RF) $(parts)
 
 part1: p1.cpp
-	g++ board.cpp list.cpp p1.cpp easycurses.cpp Pos.cpp -l ncurses -g -o $@	
+	g++ p1board.cpp list.cpp p1.cpp easycurses.cpp Pos.cpp -l ncurses -g -o $@	
 part2: p2.cpp
 	g++ board.cpp list.cpp p2.cpp easycurses.cpp Pos.cpp -l ncurses -g -o $@	
 part3: p3.cpp

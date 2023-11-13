@@ -5,7 +5,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <unistd.h>
-#include "board.h"
+#include "p1board.h"
 #include "list.h"
 using namespace std;
 
@@ -52,8 +52,31 @@ int main()
 
   endCurses();
 
+  // display the start pos and spawn points
+  cout << "Player start: " << b.player << endl;
+
+  // if I wanted a better fix, I'd reverse the linked list after I make it
+  // spawn points
+  Node* spawnpt = b.spawnpts;
+  cout << "Spawn spots: "; 
+  Pos* pts = new Pos[b.numspawnpts];
+  for(int i = 0; i < b.numspawnpts; i++)
+  {
+    pts[b.numspawnpts - (i+1)] = spawnpt->pos;
+    spawnpt = spawnpt->next;
+  }
+  for(int i = 0; i < b.numspawnpts; i++)
+  {
+    cout << pts[i];
+    if(i < b.numspawnpts - 1)
+      cout << " ";
+  }
+
+  cout << endl;
+
   // free memory
   free(b);
+  delete[] pts;
 
   return 0;
 }

@@ -39,7 +39,6 @@ istream& operator>>(istream& in, Board& b)
       else if(item == 'Y')
       {
         b.player = {row, col}; 
-        cout << "Player Start: " << b.player << endl;
       }
       else if(item == 'Z')
       {
@@ -64,30 +63,6 @@ istream& operator>>(istream& in, Board& b)
   b.numhunters = b.numspawnpts * b.huntersPerSpawn;
   b.hunters = new Enemy[b.numhunters];
 
-  Node *spawnpt = b.spawnpts;
-  cout << "Spawn Spots: ";
-  for (int i = 0; i < b.numspawnpts; i++)
-  {
-    cout << spawnpt->pos;
-    if (i < b.numspawnpts - 1)
-      cout << " ";
-
-    // create the ships
-    for (int j = 0; j < b.shipsPerSpawn; j++)
-    {
-      b.ships[i * b.shipsPerSpawn + j] = Enemy{spawnpt->pos, rand() % 4};
-    }
-
-    // create the hunter
-    for (int j = 0; j < b.huntersPerSpawn; j++)
-    {
-      b.hunters[i * b.huntersPerSpawn + j] = Enemy{spawnpt->pos, rand() % 4};
-    }
-
-    spawnpt = spawnpt->next;
-  }  
-  cout << endl;
-
   return in;
 }
 
@@ -104,21 +79,6 @@ void display(Board b)
 
   // draw goal
   drawChar('X', b.goal.row, b.goal.col);
-
-  // draw player
-  drawChar('P', b.player.row, b.player.col);
-
-  // draw the enemies
-  // ships
-  for (int i = 0; i < b.numships; i++)
-  {
-    drawChar('*', b.ships[i].pos.row, b.ships[i].pos.col);
-  }
-  // hunters
-  for (int i = 0; i < b.numhunters; i++)
-  {
-    drawChar('K', b.hunters[i].pos.row, b.hunters[i].pos.col);
-  }
 
   // update the window
   refreshWindow();
