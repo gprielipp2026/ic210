@@ -1,36 +1,41 @@
+/* part2.cpp
+ * MIDN GEORGE PRIELIPP (265112)
+ * Cantor Set */
+
 #include <iostream>
 #include <string>
 using namespace std;
 
-// Prints out the string s, count times in a row,
-// in a **single** line.
-// You must implement this using recursion!
-void repeat(string s, int count);
+string repeat(string s, int count);
+string cantor(string ch, int size);
 
-// DO NOT CHANGE the main function! Just write the definition
-// of repeat below.
 int main() {
-  cout << "10 X's:"<< endl;
-  repeat("X", 10);
-  cout << endl;
+  // get the size
+  int size;
+  cout << "size: ";
+  cin >> size;
 
-  string DIAMOND = "\u2bc1";
-  cout << "8 diamonds:" << endl;
-  repeat(DIAMOND, 8);
-  cout << endl;
+  cout << cantor("X", size) << endl;
 
-  string TRIANGLE = "\u25b2";
-  cout << "13 triangles:" << endl;
-  repeat(TRIANGLE, 13);
-  cout << endl;
   return 0;
 }
 
-void repeat(string s, int count)
+string repeat(string s, int count)
 {
-  if(count > 0)
+  if(count == 1)
   {
-    cout << s;
-    repeat(s, count-1);
+    return s;
   }
+  return s + repeat(s, count-1);
+}
+
+string cantor(string ch, int size)
+{
+  if(size == 1)
+  {
+    return ch;
+  }
+  string middle = repeat("_", size/3);
+  string side = cantor(ch, size/3);
+  return side + middle + side;
 }
