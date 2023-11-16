@@ -16,10 +16,11 @@ int main() {
   int size;
   cout << "size: ";
   cin >> size;
-  
+  cout << "Width-" << size << " Cantor set: " << endl;
+
   for(int l = 0; l < log3(size); l++)
   {
-    cout << l << ": " << cantor("X", size, l) << endl;
+    cout << cantor("X", size, l) << endl;
   }
 
   return 0;

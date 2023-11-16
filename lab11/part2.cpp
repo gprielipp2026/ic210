@@ -14,6 +14,7 @@ int main() {
   int size;
   cout << "size: ";
   cin >> size;
+  cout << "Width-" << size << " Cantor set: " << endl;
 
   cout << cantor("X", size) << endl;
 
