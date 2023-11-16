@@ -19,10 +19,11 @@ int main()
   int rows = size;
   for(int row = 0; row < rows; row++)
   {
-    cout << carpet("\u2666", size, row) << endl;
+    //cout << carpet("\u2666", size, row) << endl;
+    //cout << carpet("\u2588", size, row) << endl;
+    cout << carpet("\u2bc1", size, row) << endl;
   }
   
-
   return 0;
 }
 
