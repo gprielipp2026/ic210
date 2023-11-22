@@ -1,5 +1,5 @@
 SRCS := $(wildcard *.cpp)
-SRCS := $(filter-out p*.cpp, $(SRCS))
+SRCS := $(filter-out p%.cpp, $(SRCS))
 INCS := $(wildcard *.h)
 psrc=$(wildcard p*.cpp)
 PARTS=$(psrc:p%.cpp=part%)

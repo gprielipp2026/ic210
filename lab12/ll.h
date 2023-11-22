@@ -20,12 +20,16 @@ struct DLL
 
 /* Node */
 template <class T>
+void add2back(T data, Node<T>*& node);
+template <class T>
 istream& operator>>(istream& in, Node<T>*& node);
 template <class T>
 ostream& operator<<(ostream& out, Node<T>* node);
 
 /* DLL */
 // add a node to the back
+template <class T>
+void add2back(T data, DLL<T>& dll);
 template <class T>
 istream& operator>>(istream& in, DLL<T>& dll);
 template <class T>
@@ -36,10 +40,10 @@ void delete_dll(DLL<T>& dll);
 
 // the definitions
 template <class T>
-istream& operator>>(istream& in, Node<T>*& node)
+void add2back(T data, Node<T>*& node)
 {
   Node<T>* back = new Node<T>;
-  in >> back->data;
+  back->data = data;
 
   // creating a double linked list
   // add to the tail (that's what node is)
@@ -47,8 +51,20 @@ istream& operator>>(istream& in, Node<T>*& node)
   // then set the new tail to back
   back->prev = node;
   back->next = nullptr;
-  node->next = back;
+  if(node != nullptr)
+    node->next = back;
   node = back;
+
+
+}
+
+template <class T>
+istream& operator>>(istream& in, Node<T>*& node)
+{
+  T data;
+  in >> data;
+
+  add2back(data, node);
 
   return in;
 }
@@ -61,6 +77,22 @@ ostream& operator<<(ostream& out, Node<T>* node)
 }
 
 // add a node to the back
+template <class T>
+void add2back(T data, DLL<T>& dll)
+{
+  // add the new node to the back (the tail)
+  add2back(data, dll.tail);
+  
+  dll.length++;
+
+  // if it's the first iteration, the head and tail will line up
+  if(dll.head == nullptr)
+  {
+    dll.head = dll.tail;
+  }
+
+}
+  
 template <class T>
 istream& operator>>(istream& in, DLL<T>& dll)
 {

@@ -33,10 +33,7 @@ int main()
   dll.tail = nullptr;
 
   // get the stuff from the file
-  while(file >> dll)
-  {
-    cout << dll << endl;
-  }
+  while(file >> dll);
   
   // output
   cout << "count is " << dll.length << endl;
