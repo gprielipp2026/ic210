@@ -51,10 +51,19 @@ Node* remove(int value, Node* root)
     cur = cur->next;
   }
 
-  if(cur != NULL && prev != NULL)
+  if(cur != NULL)
   {
-    prev->next = cur->next;
-    delete cur;
+    if(cur != root)
+    {
+      prev->next = cur->next;
+      delete cur;
+    }
+    else
+    {
+      cur = cur->next;
+      delete root;
+      root = cur;
+    }
   }
   
   return root;
