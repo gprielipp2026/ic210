@@ -9,14 +9,14 @@ using namespace std;
 #define MAX_USERS 610
 #define MAX_MOVIES 9724
 
-void get_averages(double*& movieAvgs, double*& userAvgs);
+double** get_data();
+double useravg(double**, int);
+double movieavg(double**, int);
 
 int main()
 {
   // load the data
-  double* movieAvgs;
-  double* userAvgs;
-  get_averages(movieAvgs, userAvgs);
+  double** data = get_data();
 
   // get the command
   string cmd;
@@ -29,88 +29,89 @@ int main()
     // case movie average
     if(cmd == "movie")
     {
-      cout << movieAvgs[id] << endl;
+      cout << movieavg(data, id) << endl;
     }
     // case user average  
     else if (cmd == "user")
     {
-      cout << userAvgs[id] << endl;
+      cout << useravg(data, id) << endl;
     }
   }
 
   // unload the data from memory
   // delete [] ...
-  delete [] movieAvgs;
-  delete [] userAvgs;
+  for(int i = 0; i < MAX_USERS; i++)
+    delete [] data[i];
+  delete [] data;
 
   return 0;
 }
 
-/* output: 
- * stores the average rating of a given movie based on how many users have watched that given movie
- */
-void get_averages(double*& movieAvgs, double*& userAvgs)
+/* read from ratings.tsv and store the data */
+double** get_data()
 {
-  movieAvgs = new double[MAX_MOVIES];
-  userAvgs = new double[MAX_USERS];
-  int* movieCount = new int[MAX_MOVIES];
-  int* userCount = new int[MAX_USERS];
-  
-  // initialize values to 0
+  // initialize the array
+  double** array = new double*[MAX_USERS];
   for(int i = 0; i < MAX_USERS; i++)
   {
-    userAvgs[i] = 0;
-    userCount[i] = 0;
-  }
-  for(int i = 0; i < MAX_MOVIES; i++)
-  {
-    movieAvgs[i] = 0;
-    movieCount[i] = 0;
+    array[i] = new double[MAX_MOVIES];
+    for(int j = 0; j < MAX_MOVIES; j++)
+    {
+      array[i][j] = 0.0;
+    }
   }
 
-  // open the file to read from
+  // open the file
   ifstream data("ratings.tsv");
   if(!data)
   {
-    cerr << "Couldn't open ratings.tsv" << endl;
+    cerr << "ratings.tsv did not open" << endl;
     exit(1);
   }
 
-  // read file header (junk to us)
-  string str;
-  data >> str >> str >> str;
+  // read first line of file
+  string s;
+  data >> s >> s >> s;
 
-  // sum up the ratings and counts
-  int userId, movieId;
+  // loop through and read the data
+  int userID, movieID;
   double rating;
-  while(data >> userId >> movieId >> rating)
+  while(data >> userID >> movieID >> rating)
   {
-    movieAvgs[movieId] += rating;
-    userAvgs[userId] += rating;
-
-    movieCount[movieId]++;
-    userCount[userId]++;
+    array[userID][movieID] = rating;
   }
 
-  // take the averages
-  for(int i = 0; i < MAX_USERS; i++)
-  {
-    // don't divide by zero
-    if(userCount[i])
-    {
-      userAvgs[i] /= userCount[i];
-    }
-  }
+  return array;
+}
+
+// take the average rating of a given user
+double useravg(double** data, int id)
+{
+  int count = 0;
+  double sum = 0.0;
   for(int i = 0; i < MAX_MOVIES; i++)
   {
-    // don't divide by zero
-    if(movieCount[i])
+    if(data[id][i])
     {
-      movieAvgs[i] /= movieCount[i];
+      count++;
+      sum += data[id][i];
     }
   }
+  return sum / count;
+}
 
-  // free up the memory taken for the counts
-  delete [] userCount;
-  delete [] movieCount;
+// take the average rating of a given movie
+double movieavg(double** data, int id)
+{
+  int count = 0;
+  double sum = 0.0;
+  for(int i = 0; i < MAX_USERS; i++)
+  {
+    if(data[i][id])
+    {
+      count++;
+      sum += data[i][id];
+    }
+  }
+  return sum / count;
 }
