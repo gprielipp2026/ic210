@@ -1,6 +1,6 @@
-/* p4.cpp
+/* p3.cpp
  * MIDN GEORGE PRIELIPP (265112)
- * Accept or Reject Words 
+ * Print pretty & count the score
  */
 #include <iostream>
 #include <fstream>
@@ -52,10 +52,8 @@ int main()
   while(++count && temp != nullptr)
   {
     cout << "The current node: " << temp->data << endl;
-    cout << "Sentence you made so far: ";
-    printpretty(dll);
-
-    cout << "#words left: " << NUMNODES - count << endl;
+    cout << "Nodes before the current: " << dll << endl;
+    cout << "#nodes after the current: " << NUMNODES - count << endl;
     cout << "[a]ccept or [r]eject: ";
     cin >> cmd;
     if(cmd == 'a')
@@ -85,7 +83,7 @@ int getNUMNODES(string fn)
   ifstream file(fn);
   if(!file)
   {
-    cerr << "Couldn't open the file" << endl;
+    cerr << "Error! File\'" << fn << "\' not found!" << endl;
     exit(1);
   }
  

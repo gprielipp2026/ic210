@@ -22,7 +22,7 @@ int main()
   ifstream file(fn);
   if(!file)
   {
-    cerr << "Couldn't open the file" << endl;
+    cerr << "Error! File\'" << fn << "\' not found!" << endl;
     exit(1);
   }
 
@@ -33,10 +33,14 @@ int main()
   dll.tail = nullptr;
 
   // get the stuff from the file
-  while(file >> dll);
+  Pair data;
+  while(file >> data)
+  {
+    add2front(data, dll);
+  }
   
   // output
-  cout << "count is " << dll.length << endl;
+  cout << "Count is " << dll.length << endl;
   cout << dll << endl;
 
   // free memory

@@ -66,7 +66,7 @@ int getNUMNODES(string fn)
   ifstream file(fn);
   if(!file)
   {
-    cerr << "Couldn't open the file" << endl;
+    cerr << "Error! File\'" << fn << "\' not found!" << endl;
     exit(1);
   }
  
