@@ -1,6 +1,6 @@
-/* p3.cpp
+/* p4.cpp
  * MIDN GEORGE PRIELIPP (265112)
- * Print pretty & count the score
+ * Accept or Reject Words 
  */
 #include <iostream>
 #include <fstream>
@@ -52,8 +52,10 @@ int main()
   while(++count && temp != nullptr)
   {
     cout << "The current node: " << temp->data << endl;
-    cout << "Nodes before the current: " << dll << endl;
-    cout << "#nodes after the current: " << NUMNODES - count << endl;
+    cout << "Sentence you made so far: ";
+    printpretty(dll);
+
+    cout << "#words left: " << NUMNODES - count << endl;
     cout << "[a]ccept or [r]eject: ";
     cin >> cmd;
     if(cmd == 'a')

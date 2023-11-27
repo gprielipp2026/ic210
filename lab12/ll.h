@@ -22,6 +22,8 @@ struct DLL
 template <class T>
 void add2back(T data, Node<T>*& node);
 template <class T>
+void add2front(T data, Node<T>*& node);
+template <class T>
 istream& operator>>(istream& in, Node<T>*& node);
 template <class T>
 ostream& operator<<(ostream& out, Node<T>* node);
@@ -30,6 +32,8 @@ ostream& operator<<(ostream& out, Node<T>* node);
 // add a node to the back
 template <class T>
 void add2back(T data, DLL<T>& dll);
+template <class T>
+void add2front(T data, DLL<T>& dll);
 template <class T>
 istream& operator>>(istream& in, DLL<T>& dll);
 template <class T>
@@ -54,8 +58,17 @@ void add2back(T data, Node<T>*& node)
   if(node != nullptr)
     node->next = back;
   node = back;
+}
 
-
+template <class T>
+void add2front(T data, Node<T>*& node)
+{
+  Node<T>* front = new Node<T>;
+  front->data = data;
+  front->next = node;
+  if(node != nullptr)
+    node->prev = front;
+  node = front;
 }
 
 template <class T>
@@ -93,6 +106,13 @@ void add2back(T data, DLL<T>& dll)
 
 }
   
+template <class T>
+void add2front(T data, DLL<T>& dll)
+{
+  add2front(data, dll.head);
+  dll.length++;
+}
+
 template <class T>
 istream& operator>>(istream& in, DLL<T>& dll)
 {
