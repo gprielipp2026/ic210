@@ -15,8 +15,9 @@ struct Node
 Node* newNode(Pair p, Node* n, int l);
 void deletell(Node*& root);
 void add2front(Pair p, Node*& root);
-void remove(Node* node, Node* root);
+void remove(Node* node, Node*& root);
 void print2(Node* root, Node* node);
+void printpretty2(Node* root, Node* node);
 void printpretty(Node* root);
 
 istream& operator>>(istream& is, Node*& root);

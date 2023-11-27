@@ -19,7 +19,7 @@ int main()
   ifstream file(fn);
   if(!file)
   {
-    cerr << "Error! File \'" << fn << "\' not found!" << endl;
+    cout << "Error! File \'" << fn << "\' not found!" << endl;
     exit(1);
   }
 

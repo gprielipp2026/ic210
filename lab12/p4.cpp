@@ -1,12 +1,14 @@
-/* p2.cpp
+/* p4.cpp
  * MIDN GEORGE PRIELIPP
- * The user iterates through the list
+ * Accept or Reject Words
  */
 #include <iostream>
 #include <fstream>
 using namespace std;
 
 #include "ll.h"
+
+int getscore(Node* root);
 
 int main()
 {
@@ -34,8 +36,8 @@ int main()
   {
     cout << endl;
     cout << "The current node: " << cur->data << endl;
-    cout << "Nodes before the current: "; print2(root, cur); cout << endl;
-    cout << "#nodes after the current: " << cur->length-1 << endl;
+    cout << "Sentence you made so far: "; printpretty2(root, cur); cout << endl;
+    cout << "#words left: " << cur->length-1 << endl;
     cout << "[a]ccept or [r]eject: ";
     char cmd;
     cin >> cmd;
@@ -52,11 +54,18 @@ int main()
 
   // output
   cout << endl;
-  cout << "List is: " << root << endl;
+  cout << "Sentence is: "; printpretty(root); cout << endl;
+  cout << "Score is: " << getscore(root) << endl;
 
   // free memory
   deletell(root);
   
-
   return 0;
+}
+
+int getscore(Node* root)
+{
+  if(root == nullptr)
+    return 0;
+  return root->data.value + getscore(root->next);
 }

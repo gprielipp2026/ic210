@@ -23,8 +23,16 @@ void add2front(Pair p, Node*& root)
   root = front;
 }
 
-void remove(Node* node, Node* root)
+void remove(Node* node, Node*& root)
 {
+  if(node == root)
+  {
+    Node* temp = root->next;
+    delete root;
+    root = temp;
+    return;
+  }
+
   Node* prev = root;
   // get the prev node
   while(prev->next != node && (prev = prev->next));
@@ -43,12 +51,24 @@ void print2(Node* root, Node* node)
   }
 }
 
+void printpretty2(Node* root, Node* node)
+{
+  Node* temp = root;
+  while(temp != node)
+  {
+    cout << temp->data.name << " ";
+    temp = temp->next;
+  }
+}
+
+
+
 void printpretty(Node* root)
 {
   if(root == nullptr)
     return;
   
-  cout << root->data << " ";
+  cout << root->data.name << " ";
   printpretty(root->next);
 }
 

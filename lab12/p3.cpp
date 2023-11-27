@@ -1,12 +1,14 @@
-/* p2.cpp
+/* p3.cpp
  * MIDN GEORGE PRIELIPP
- * The user iterates through the list
+ * Print pretty & count the score
  */
 #include <iostream>
 #include <fstream>
 using namespace std;
 
 #include "ll.h"
+
+int getscore(Node* root);
 
 int main()
 {
@@ -52,11 +54,19 @@ int main()
 
   // output
   cout << endl;
-  cout << "List is: " << root << endl;
+  cout << "List is: "; printpretty(root); cout << endl;
+  cout << "Score is: " << getscore(root) << endl;
 
   // free memory
   deletell(root);
   
 
   return 0;
+}
+
+int getscore(Node* root)
+{
+  if(root == nullptr)
+    return 0;
+  return root->data.value + getscore(root->next);
 }
