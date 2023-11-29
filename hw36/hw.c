@@ -13,7 +13,7 @@ struct Node_t
 typedef struct Node_t Node;
 
 
-char* get_data(int* rc); // use a return code to see if it needs stop
+int get_data(char* word);
 void add2front(char* word, Node** root);
 void print_if_match(char letter, Node* root);
 void free_ll(Node* root);
@@ -25,17 +25,17 @@ int main()
   Node* root = NULL;
 
   // read in the list
-  int rc; // rc = 0 <-- stop, rc = 1 <-- good
   char* word;
-  while((word = get_data(&rc)) && rc != 0)
+  while(get_data(word))
   {
     add2front(word, &root);
   }
 
   // get the user's letter
   printf("What letter? ");
-  char l = 0;
-  scanf("\n%c", &l);
+  scanf("\n");
+  char l;
+  scanf("%c", &l);
 
   // print the matches
   print_if_match(l, root);
@@ -46,15 +46,15 @@ int main()
   return 0;
 }
 
-char* get_data(int* rc)
+int get_data(char* word)
 {
-  char word[128];
-  scanf("%s ", word);
+  scanf("%s", word);
   if(!strcmp(word, "END"))
-    *rc = 0;
-  else
-    *rc = 1;
-  return word;
+  {
+    return 0;
+  }
+  scanf(" ");
+  return 1;
 }
 
 void add2front(char* word, Node** root)
